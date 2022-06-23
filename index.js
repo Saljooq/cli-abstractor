@@ -15,7 +15,7 @@ const writer = (fileName, content)=>{
     const inputs = regexScan(content);
     content = JSON.stringify({content : content, 
         mapping : inputs
-    });
+    }, null, 4);
     fs.writeFile(fileName, content, err => {
         if (err){
             console.log(`Error writing to file ${fileName}: ${err}`);
