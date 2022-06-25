@@ -2,7 +2,7 @@
 import fs from 'fs'
 
 
-fs.readFile('./testInput.c', 'utf8', (err, data) => {
+fs.readFile('./index-generalised.js', 'utf8', (err, data) => {
     if (err){
         console.log(err);
         return;

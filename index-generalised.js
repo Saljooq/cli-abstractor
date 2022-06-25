@@ -5,16 +5,6 @@ import readLine from 'readline'
 
 const readFile = async (fileName) => {
 
-    // await fs.readFile(fileName, 'utf8', (err, data) => {
-    //     if (err){
-    //         console.log(err);
-    //         return null;
-    //     }
-    //     // console.log(data);
-    //     // writer('store.json', data)
-    //     console.log(data)
-    // })
-
     try{
         const readFile = promisify(fs.readFile);
         const data_out = await readFile(fileName, 'utf8')
@@ -65,7 +55,6 @@ const regexScan = (content) => {
 
 const askForVar = async (varName) => {
 
-
     const reader = readLine.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -108,10 +97,12 @@ const askForVar = async (varName) => {
 
 
 
+
+
     const data_json = await readFile('./store.json')
+    console.log(data_json);
     const data = JSON.parse(data_json)
     console.log(data.mapping)
-
 
 
     // const store_object = JSON.parse(readFile('./store.json'));
