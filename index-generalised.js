@@ -1,16 +1,29 @@
 #!/usr/bin/env node
 import fs from 'fs'
+import { promisify } from 'util';
+import readLine from 'readline'
 
-const readFile = (fileName) => {
-    fs.readFile(fileName, 'utf8', (err, data) => {
-        if (err){
-            console.log(err);
-            return null;
-        }
-        // console.log(data);
-        // writer('store.json', data)
-        return data;
-    })
+const readFile = async (fileName) => {
+
+    // await fs.readFile(fileName, 'utf8', (err, data) => {
+    //     if (err){
+    //         console.log(err);
+    //         return null;
+    //     }
+    //     // console.log(data);
+    //     // writer('store.json', data)
+    //     console.log(data)
+    // })
+
+    try{
+        const readFile = promisify(fs.readFile);
+        const data_out = await readFile(fileName, 'utf8')
+
+        return data_out;
+    }catch(e){
+        console.log(e)
+        return null
+    }
 }
 
 const writer = (fileName, content)=>{
@@ -50,8 +63,28 @@ const regexScan = (content) => {
     return [...allInput];
 }
 
+const askForVar = async (varName) => {
 
-function main(){
+
+    const reader = readLine.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+  
+    let res;
+  
+  
+    process.stdout.write(`What's the ${varName}?        `);
+  
+    for await (const line of reader){
+      res = line;
+      reader.close();
+    }
+    return res;
+  }
+
+
+  async function main(){
 
     // We grab all the files on the current path
     // TODO : recursively fetch all the files in the folders in the path
@@ -66,6 +99,25 @@ function main(){
     console.log(`files in the current folder are : ${files}`)
 
     // unless specified we put everything in the default flag
+
+    var in_flag = await askForVar("Flag");
+
+    in_flag = in_flag === '' ? 'default' : in_flag;
+
+    console.log(in_flag);
+
+
+
+    const data_json = await readFile('./store.json')
+    const data = JSON.parse(data_json)
+    console.log(data.mapping)
+
+
+
+    // const store_object = JSON.parse(readFile('./store.json'));
+    // console.log(store_object.mapping)
+
+    // console.log(JSON.stringify(store_object))
 
     // First we make an array of all the file names and their content.
 
