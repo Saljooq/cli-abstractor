@@ -8,6 +8,7 @@
     "start" : "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": "./index-generalised.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Saljooq/cli-abstractor.git"
