@@ -2,6 +2,7 @@
 import fs from 'fs'
 import { promisify } from 'util';
 import readLine from 'readline'
+import data from './store.js'
 
 const readFile = async (fileName) => {
 
@@ -97,12 +98,12 @@ const askForVar = async (varName) => {
 
 
 
+    console.log(data)
 
-
-    const data_json = await readFile('./store.json')
-    console.log(data_json);
-    const data = JSON.parse(data_json)
-    console.log(data.mapping)
+    // const data_json = await readFile('./store.json')
+    // console.log(data_json);
+    // const data = JSON.parse(data_json)
+    // console.log(data.mapping)
 
 
     // const store_object = JSON.parse(readFile('./store.json'));

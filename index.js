@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import fs from 'fs'
 
-
 fs.readFile('./index-generalised.js', 'utf8', (err, data) => {
     if (err){
         console.log(err);
