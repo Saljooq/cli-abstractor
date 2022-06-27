@@ -1,6 +1,6 @@
 {
   "name": "cli-abstractor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This can be potentially be used by developers to create a CLI that would allow code reuse - and a CLI to prompt them for necessary information",
   "main": "index-generalised.js",
   "type": "module",
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/Saljooq/cli-abstractor.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sal Altaf",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Saljooq/cli-abstractor/issues"
