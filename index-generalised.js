@@ -186,15 +186,21 @@ const askForVar = async (varName) => {
         content : [
             {
                 flag : default
-                fileContent : [
+                content : [
                     { 
+                        type: "file",
                         name : "index-client-module.js",
                         content : "Something something"
 
                     },
                     {
+                        type: "file"
                         name : "README.md",
                         content : "Something something......"
+                    },
+                    {
+                        type: "folder",
+                        name: "main-logic"
                     }
                 ]
                 mappings : [ "var1", "var2" ]
