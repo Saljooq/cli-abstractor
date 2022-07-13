@@ -2,7 +2,7 @@
 import fs from 'fs'
 import { promisify } from 'util';
 import readLine from 'readline'
-import data from './store.js'
+import data from '../store.js'
 
 /**
  * This should get the content of the file as String from a filenamesfread
@@ -27,7 +27,7 @@ const readFile = async (fileName) => {
  * This is a general purpose function to be used for creating the json
  * and objects to be used for the store
  */
-const storeJsonCreator = ( content)=>{
+const storeJsonCreator = (content) => {
     const inputs = regexScan(content);
     content = {
         content : content, 
@@ -38,7 +38,7 @@ const storeJsonCreator = ( content)=>{
 }
 
 const writeToStore = (value) => {
-    content = JSON.stringify(value, null, 4);
+    const content = JSON.stringify(value, null, 4);
 
 
     const data = `const data = ${content}\n\nexport default data;`
@@ -92,7 +92,7 @@ const regexScan = (content) => {
  * @param {String} varName 
  * @returns 
  */
-const askForVar = async (varName) => {
+const askForVar = async (varName ) => {
 
     const reader = readLine.createInterface({
       input: process.stdin,
@@ -114,9 +114,11 @@ const askForVar = async (varName) => {
 
   async function main(){
 
+    const targetFromHere = "."
+
     // We grab all the files on the current path
     // TODO : recursively fetch all the files in the folders in the path
-    let arr = fs.readdirSync('./').map(x => './'+x);
+    let arr = fs.readdirSync(targetFromHere + '/').map(x => targetFromHere + '/'+x);
 
     const isFile = fileName => {
         return fs.lstatSync(fileName).isFile();
@@ -153,10 +155,13 @@ const askForVar = async (varName) => {
 
     // console.log(data)
 
-    const content_of_c_file = await readFile('./testInput.c')
+    const content_of_c_file = await readFile( targetFromHere + '/testInput.c')
     console.log(content_of_c_file);
 
     const test_for_c_file = storeJsonCreator(content_of_c_file);
+    console.log(test_for_c_file)
+    writeToStore(test_for_c_file)
+
 
     // console.log(test_for_c_file);
 
