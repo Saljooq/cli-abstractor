@@ -162,6 +162,18 @@ const askForVar = async (varName ) => {
     console.log(test_for_c_file)
     writeToStore(test_for_c_file)
 
+    const content_of_ignore_file = await readFile( targetFromHere + '/cli-abstractor-store/.cli-ignore')
+    const ingoreStuff = content_of_ignore_file.split("\n").map(x => x.trimEnd('\r'))
+    console.log(ingoreStuff);
+
+    // create a .cli-ignore
+    // read the ignore file and get a list of file/folder names
+    // dont put the file or foldernames that match the list in the store file/folder list
+    // make a copy of all the files in the store along with mapping - with the default flag
+    // this should then auto create the index file that would help users access flags and dynamically
+    // generate a prompt
+    // STAGE 1 COMPLETE
+
 
     // console.log(test_for_c_file);
 
