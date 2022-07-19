@@ -67,8 +67,7 @@ import { fileWriter, writeToStore, readFile, storeJsonCreator } from './io.js'
     // this should then auto create the index file that would help users access flags and dynamically
     // generate a prompt
     // STAGE 1 COMPLETE
-
-
+    console.log(process.cwd())
 }
 
 main()
