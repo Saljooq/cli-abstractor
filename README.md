@@ -70,3 +70,50 @@ the final user upon running the module -> will be calling the abtract funtion th
 
 
 3. Include instructions on publishing and how to use it 
+
+
+# GOAL FOR PHASE 1
+
+- create a .cli-ignore
+- read the ignore file and get a list of file/folder names
+- dont put the file or foldernames that match the list in the store file/folder list
+- make a copy of all the files in the store along with mapping - with the default flag
+- this should then auto create the index file that would help users access flags and dynamically
+- generate a prompt
+- STAGE 1 COMPLETE
+
+Sample of ./cli-abstractor-store.js:
+
+```javascript
+
+const data = {
+        project-name : "",
+        description : "",
+        content : [
+            {
+                flag : default
+                content : [
+                    { 
+                        type: "file",
+                        name : "index-client-module.js",
+                        content : "Something something"
+
+                    },
+                    {
+                        type: "file"
+                        name : "README.md",
+                        content : "Something something......"
+                    },
+                    {
+                        type: "folder",
+                        name: "main-logic"
+                    }
+                ]
+                mappings : [ "var1", "var2" ]
+            },
+
+        ]
+    }
+
+export default data;
+```

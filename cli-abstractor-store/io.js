@@ -46,7 +46,7 @@ export const writeToStore = (value) => {
     const data = `const data = ${content}\n\nexport default data;`
 
     // To be used for all content in sotre
-    const fileName = `./store.js`
+    const fileName = `./cli-abstractor-store/store.js`
 
     fileWriter(fileName, data);
 }
