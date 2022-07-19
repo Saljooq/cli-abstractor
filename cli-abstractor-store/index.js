@@ -69,57 +69,6 @@ import { fileWriter, writeToStore, readFile, storeJsonCreator } from './io.js'
     // STAGE 1 COMPLETE
 
 
-    // console.log(test_for_c_file);
-
-
-    // const data_json = await readFile('./store.json')
-    // console.log(data_json);
-    // const data = JSON.parse(data_json)
-    // console.log(data.mapping)
-
-
-    // const store_object = JSON.parse(readFile('./store.json'));
-    // console.log(store_object.mapping)
-
-    // console.log(JSON.stringify(store_object))
-
-    // First we make an array of all the file names and their content.
-
-    // Next we send all of those to the regex matcher and store all the matches into an array
-
-    // Next we create a set of all the variable names
-
-
-    /**
-    {
-        project-name : "",
-        description : "",
-        content : [
-            {
-                flag : default
-                content : [
-                    { 
-                        type: "file",
-                        name : "index-client-module.js",
-                        content : "Something something"
-
-                    },
-                    {
-                        type: "file"
-                        name : "README.md",
-                        content : "Something something......"
-                    },
-                    {
-                        type: "folder",
-                        name: "main-logic"
-                    }
-                ]
-                mappings : [ "var1", "var2" ]
-            },
-
-        ]
-    }
-    */
 }
 
 main()
