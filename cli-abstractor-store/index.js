@@ -5,8 +5,7 @@ import {askForVar} from './prompt.js'
 import { fileWriter, writeToStore, readFile, storeJsonCreator } from './io.js'
 
 
-
-  async function main(){
+async function main(){
 
     const targetFromHere = "."
 
@@ -55,10 +54,6 @@ import { fileWriter, writeToStore, readFile, storeJsonCreator } from './io.js'
     const test_for_c_file = storeJsonCreator(content_of_c_file);
     console.log(test_for_c_file)
     writeToStore(test_for_c_file)
-
-    const content_of_ignore_file = await readFile( targetFromHere + '/cli-abstractor-store/.cli-ignore')
-    const ingoreStuff = content_of_ignore_file.split("\n").map(x => x.trimEnd('\r'))
-    console.log(ingoreStuff);
 
     // create a .cli-ignore
     // read the ignore file and get a list of file/folder names
