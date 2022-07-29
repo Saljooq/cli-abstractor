@@ -54,12 +54,26 @@ export const writeToStore = (value) => {
 /**
  * This is a general purpose function to be used for creating the json
  * and objects to be used for the store
+ * 
+ * @param content Array of dictionaries with name and content keys for all the files
  */
- export const storeJsonCreator = (content) => {
-    const inputs = regexScan(content);
+ export const storeJsonCreator = (flag, content) => {
+    var inputs = null
+    
+    for (let files of content){
+        inputs = regexScan(files["content"], inputs)
+    }
+
     content = {
-        content : content, 
-        mapping : inputs
+        projectName: "",
+        description: "",
+        content : [
+            {
+                flag : flag,
+                content : content,
+                mapping : inputs
+            }
+        ]
     };
 
     return content;

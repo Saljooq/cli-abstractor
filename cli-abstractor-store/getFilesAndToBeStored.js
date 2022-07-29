@@ -3,6 +3,8 @@ import fs from 'fs'
  * This function is used to get the list of all the files and folders that
  * shouldn't be ignored
  * 
+ * @param listOfFilesToIgnore Array of string of files/folders to ignore 
+ * 
  * @returns Array of String or null
  */
 export const getFileAndFoldersToBeStored = (listOfFilesAndFoldersToIgnore) => {
@@ -27,7 +29,7 @@ export const getFileAndFoldersToBeStored = (listOfFilesAndFoldersToIgnore) => {
 
         const folderName = folders.pop()
 
-        console.log(folderName)
+        // console.log(folderName)
         
         const inside = fs.readdirSync(folderName).map(x => `${folderName}/${x}`)
 
@@ -35,7 +37,7 @@ export const getFileAndFoldersToBeStored = (listOfFilesAndFoldersToIgnore) => {
 
         filesInside && finalCatalogOfFiles.push(...filesInside)
 
-        console.log(`files in ${folderName} are ${filesInside}`)
+        // console.log(`files in ${folderName} are ${filesInside}`)
 
         const foldersInside = inside.filter(x => !isFile(x))
 
@@ -63,15 +65,15 @@ const treatList = (listOfFilesAndFoldersToIgnore) => {
 
     const finalList = []
 
-    for (let name in listOfFilesAndFoldersToIgnore){
+    for (let name of listOfFilesAndFoldersToIgnore){
         if (name.startsWith('./')){
-            finalList.push(finalList)
+            finalList.push(name)
         }
         else if (name.startsWith('/')){
-            finalList.push(`.{name}`)
+            finalList.push(`.${name}`)
         }
         else{
-            finalList.push(`./{name}`)
+            finalList.push(`./${name}`)
         }
     }
 
@@ -87,7 +89,8 @@ const treatList = (listOfFilesAndFoldersToIgnore) => {
  */
 const checkForIgnore = (word, listOfIgnores) => {
 
-    for (let name in listOfIgnores){
+    for (let name of listOfIgnores){
+        // console.log(`${name} - ${listOfIgnores}`)
         if (word.startsWith(name)){
             return false
         }
@@ -106,5 +109,9 @@ const checkForIgnore = (word, listOfIgnores) => {
  */
 
 const checkForIgnoreWithList = (listOfIgnores) => {
-    return (word) => checkForIgnore(word, listOfIgnores)
+    return (word) => {
+        const a = checkForIgnore(word, listOfIgnores)
+        // console.log(`${word}, ${a} -> IGNORES => ${listOfIgnores}`)
+        return a
+    }
 }
