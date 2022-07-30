@@ -11,15 +11,20 @@ import readLine from 'readline'
       input: process.stdin,
       output: process.stdout,
     });
-  
-    let res;
-  
-  
-    process.stdout.write(`What's the ${varName}?        `);
-  
-    for await (const line of reader){
-      res = line;
-      reader.close();
+
+    const AsyncReader = async(query) => {
+      return new Promise(
+        resolve => {
+          reader.question(query, answer => {
+            reader.close()
+            return resolve(answer)
+          })
+        }
+      )
     }
-    return res;
+
+    const outData = await AsyncReader(`What's the ${varName}?        `)
+
+    return outData
+  
   }
