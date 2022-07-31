@@ -8,14 +8,12 @@ import { readFile } from "./io.js"
  * @returns Array of String
  */
 export const  getFileAndFoldersToIgnore = async () => {
-    var content_of_ignore_file = await readFile( './cli-abstractor-store/.cli-ignore-')
 
-    if (content_of_ignore_file === null) { 
-        content_of_ignore_file = await readFile( './.cli-ignore')
-    }
+    const content_of_ignore_file = await readFile( './.cli-ignore')
+
 
     if (content_of_ignore_file !== null) { 
-        return content_of_ignore_file.split("\n").map(x => x.trimEnd('\r'))
+        return content_of_ignore_file.split("\n").map(x => x.trimEnd('\r')).filter(x => x !== '')
     }
 
     return []

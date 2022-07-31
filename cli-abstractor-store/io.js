@@ -16,7 +16,7 @@ import fs from 'fs'
 
         return data_out;
     }catch(e){
-        console.log(e)
+        // console.log(e)
         return null
     }
 }
