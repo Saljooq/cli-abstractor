@@ -1,6 +1,7 @@
 import { promisify } from 'util';
 import { regexScan } from './regex.js';
 import fs from 'fs'
+import path from 'path'
 
 /**
  * This should get the content of the file as String from a filenamesfread
@@ -27,12 +28,38 @@ import fs from 'fs'
  * @param {String} fileName 
  * @param {String} content 
  */
- export const fileWriter = (fileName, content) => {
-    fs.writeFile(fileName, content, err => {
-        if (err){
-            console.log(`Error writing to file ${fileName}: ${err}`);
+ export const fileWriter = async (fileName, content) => {
+    async function isExists(path) {
+        try {
+            await fs.access(path);
+            return true;
+        } catch {
+            return false;
         }
-    })
+    };
+      
+    const errorLog = (custom_string) =>{
+
+        return (err) => {
+            if (err){
+                console.log(`Error writing to the ${custom_string}. Name : ${fileName}: ${err}`);
+            }
+        }
+    }
+
+    try {
+        const dirname = path.dirname(fileName);
+        const exist = await isExists(dirname);
+        if (!exist) {
+            await fs.mkdir(dirname, {recursive: true}, errorLog('director'));
+        }
+        
+        await fs.writeFile(fileName, content, errorLog('file'))
+    } catch (err) {
+        console.log(`Error writing to file ${fileName}: ${err}`);
+    }
+      
+
 }
 /**
  * This should take a JSON and save a stringized version on it in store.js
@@ -58,10 +85,12 @@ export const writeToStore = (value) => {
  * @param content Array of dictionaries with name and content keys for all the files
  */
  export const storeJsonCreator = (flag, content) => {
-    var inputs = null
+    var inputs = new Set()
     
     for (let files of content){
-        inputs = regexScan(files["content"], inputs)
+        let newMatch = regexScan(files["content"])
+        newMatch.length > 0 && newMatch.forEach(x => inputs.add(x))
+        console.log([...inputs])
     }
 
     content = {
@@ -71,7 +100,7 @@ export const writeToStore = (value) => {
             {
                 flag : flag,
                 content : content,
-                mapping : inputs
+                mapping : [...inputs]
             }
         ]
     };

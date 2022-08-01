@@ -1,4 +1,4 @@
-export const regexScan = (content, oldSet) => {
+export const regexScan = (content) => {
     // Essentially we're asking for matches with starting
     // and ending jinja brackets without middle part
     const regex = /{{[^{{]*}}/g;
@@ -9,10 +9,8 @@ export const regexScan = (content, oldSet) => {
     }
 
     const allInputsWithRepeat = found.map(x => excludeBrack(x[0]));
-    // console.log(allInputsWithRepeat)
     const allInput = new Set(allInputsWithRepeat)
-    oldSet && allInput.add(...oldSet)
-    // console.log([...allInput])
-
-    return [...allInput];
+    const finalRes =  [...allInput];
+    console.log(finalRes)
+    return finalRes
 }

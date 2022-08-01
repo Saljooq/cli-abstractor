@@ -39,7 +39,7 @@ async function main(){
 
         in_flag = in_flag === '' ? 'default' : in_flag;
 
-        const availableFlags = data.content.map(x => x.flag)
+        const availableFlags = data ? data.content.map(x => x.flag) : []
 
         if (availableFlags.includes(in_flag)){
             console.log(`There appears to be a conflict. Existing flags: ${availableFlags}`+
@@ -90,7 +90,7 @@ async function main(){
 
             for (let file of selectedModule.content){
                 console.log(`+ creating/writing to file ${file.name}`)
-                fileWriter(file.name, file.content)
+                await fileWriter(file.name, file.content)
             }
         }
 
