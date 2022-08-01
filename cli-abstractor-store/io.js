@@ -51,10 +51,11 @@ import path from 'path'
         const dirname = path.dirname(fileName);
         const exist = await isExists(dirname);
         if (!exist) {
-            await fs.mkdir(dirname, {recursive: true}, errorLog('director'));
+            await fs.mkdirSync(dirname, {recursive: true}, errorLog('directory'));
         }
         
         await fs.writeFile(fileName, content, errorLog('file'))
+
     } catch (err) {
         console.log(`Error writing to file ${fileName}: ${err}`);
     }

@@ -72,13 +72,14 @@ async function main(){
     }
     // This will be running on the end user's computers
     else{
-        const availableFlags = data.content.map(x => x.flag)
+        const availableFlags = data ? data.content.map(x => x.flag) : []
         console.log(`Available flags: ${availableFlags}`)
 
         // check for flag
-        const inFlag = await askForVar('flag')
+        var inFlag = await askForVar('flag')
+        inFlag = inFlag === '' ? 'default' : inFlag
 
-        const dataSelected = data.content.filter(x => x.flag === inFlag)
+        const dataSelected = data ? data.content.filter(x => x.flag === inFlag): []
         
         if (dataSelected.length === 0 )
         {    

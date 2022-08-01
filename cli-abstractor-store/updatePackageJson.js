@@ -13,6 +13,12 @@ async function updatePackageJson(){
     packageContent['type'] = "module"
     packageContent['bin'] = "./cli-abstractor-store/index.js"
 
+    if (!('scripts' in packageContent)){
+        packageContent['scripts'] = {}
+    }
+    packageContent['scripts']['start'] = "node ."
+
+
     const finalOutput = JSON.stringify(packageContent, null, 2)
 
     fileWriter('package.json', finalOutput)
