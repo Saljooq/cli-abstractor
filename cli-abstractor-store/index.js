@@ -14,6 +14,13 @@ async function main(){
     // TODO : recursively fetch all the files in the folders in the path
 
     // This is for CLI developer
+
+
+    const Blink = "\x1b[5m"
+    const FgGreen = "\x1b[32m"
+    const BgYellow = "\x1b[43m"
+    const FgDefault = '\x1b[0m'
+
     if (!useForEndUser())
     {
         if (isProjectCreator()){
@@ -73,7 +80,7 @@ async function main(){
     // This will be running on the end user's computers
     else{
         const availableFlags = data ? data.content.map(x => x.flag) : []
-        console.log(`Available flags: ${availableFlags}`)
+        console.log(`${FgGreen}` , `Available flags: ${availableFlags}`, `${FgDefault}`)
 
         // check for flag
         var inFlag = await askForVar('flag')
