@@ -82,6 +82,40 @@ the final user upon running the module -> will be calling the abtract funtion th
 - generate a prompt
 - STAGE 1 COMPLETE
 
+# GOAL FOR PHASE 2
+
+- investigate a single repo for all stages
+- dynamically get a list of all the files on the path - with the relevant ignored
+- generate a set of all the mappings that will be needed
+- create the relevant structure to store all the mappings + files' data in one place per module
+- enable a prompt to ask the user to choose a module
+- create all the files in the relevant module
+- STAGE 2 COMPLETE
+
+# GOAL FOR PHASE 3
+
+- update the logic to work within one repo
+- separate the logic for absorb and start
+- test generation of all the files in a module
+- make module more intuitive prompts
+- add colorings for warning and prompts - or important information
+- generate prompt to get the mappings to replace text
+- add logic to replace relevant text in the files
+- add logic to also enable name change of files themselves
+- update readme to indicate how the app will work
+- create a global store for the opening and closing sequence for replacement - this will enable auto-generation of code in with jinja brackets are valid code
+- test more thoroughly to make sure sequence of updates work
+
+# GOAL FOR PHASE 4
+
+- investingate upgrading to typescript - and if all the logic will still be backwards compatible
+- change flags to modules for easy understandability
+- change file's content to fileContent and file's name to fileName
+- add types - if possible - this will require time
+- add if-module feature
+- create gifs of videos to make the sequence of steps and what they produce more understandable
+
+
 Sample of ./cli-abstractor-store.js:
 
 ```javascript
