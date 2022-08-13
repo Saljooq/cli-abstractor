@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "absorb": "node ./cli-abstractor-store/absorb.js"
   },
   "repository": {
     "type": "git",

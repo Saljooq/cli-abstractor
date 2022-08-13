@@ -6,8 +6,9 @@ import { getFileAndFoldersToIgnore } from './getFileAndFoldersToIgnore.js'
 import {isProjectCreator, useForEndUser} from './globalVariables.js'
 import data from './store.js'
 import updatePackageJson from './updatePackageJson.js'
+import {ingest} from './ingest.js'
 
-
+// This will be running on the end user's computers
 async function main(){
 
     // We grab all the files on the current path
@@ -21,88 +22,45 @@ async function main(){
     const BgYellow = "\x1b[43m"
     const FgDefault = '\x1b[0m'
 
-    if (!useForEndUser())
-    {
-        if (isProjectCreator()){
-            updatePackageJson()
-        }
 
-        const listOfFilesToIgnore = await getFileAndFoldersToIgnore()
-
-        !isProjectCreator() && (listOfFilesToIgnore.push('.cli-ignore'))
-
-        const listOfFilesToStore = getFileAndFoldersToBeStored(listOfFilesToIgnore)
-        
-        console.log("Here is the list of files that would be added")
-        console.log(listOfFilesToStore)
-
-        console.log("Do you want to continue")
-        var answer = await askForVar("answer")
-        if (answer !== 'yes' && answer !== 'y'){
-            return
-        }
-
-        var in_flag = await askForVar("Flag");
-
-        in_flag = in_flag === '' ? 'default' : in_flag;
-
-        const availableFlags = data ? data.content.map(x => x.flag) : []
-
-        if (availableFlags.includes(in_flag)){
-            console.log(`There appears to be a conflict. Existing flags: ${availableFlags}`+
-            '\nAre you sure you want to overwrite existing files? - check cli-abstractor-store/store.js')
-            console.log("Do you want to continue")
-            var answer = await askForVar("answer")
-            if (answer !== 'yes' && answer !== 'y'){
-                return
-            }
-        }
-
-        const list_of_files_and_content = []
-
-        for (let fileName of listOfFilesToStore){
-            const content_of_file = await readFile(fileName)
-            console.log(content_of_file);
-
-            let new_file_content = {}
-            new_file_content['name'] = fileName
-            new_file_content['content'] = content_of_file
-            list_of_files_and_content.push(new_file_content)
-
-
-        }
-
-        const test_for_file = storeJsonCreator(in_flag, list_of_files_and_content);
-
-        console.log(test_for_file)
-        writeToStore(test_for_file)
+    if (isProjectCreator()){
+        updatePackageJson()
     }
-    // This will be running on the end user's computers
+
+    
+    const availableFlags = data ? data.content.map(x => x.flag) : []
+    console.log(`${FgGreen}Available flags: ${availableFlags}`, `${FgDefault}`)
+
+    // check for flag
+    var inFlag = await askForVar('flag')
+    inFlag = inFlag === '' ? 'default' : inFlag
+
+    const dataSelected = data ? data.content.filter(x => x.flag === inFlag): []
+    
+    if (dataSelected.length === 0 )
+    {    
+        console.log(`nothing matching the flag found. Available flags: ${availableFlags}`)
+    }
     else{
-        const availableFlags = data ? data.content.map(x => x.flag) : []
-        console.log(`${FgGreen}` , `Available flags: ${availableFlags}`, `${FgDefault}`)
+        // There shouldn't be more than one modules matching the same flag
+        const selectedModule = dataSelected[0]
 
-        // check for flag
-        var inFlag = await askForVar('flag')
-        inFlag = inFlag === '' ? 'default' : inFlag
-
-        const dataSelected = data ? data.content.filter(x => x.flag === inFlag): []
-        
-        if (dataSelected.length === 0 )
-        {    
-            console.log(`nothing matching the flag found. Available flags: ${availableFlags}`)
-        }
-        else{
-            // There shouldn't be more than one modules matching the same flag
-            const selectedModule = dataSelected[0]
-
-            for (let file of selectedModule.content){
-                console.log(`+ creating/writing to file ${file.name}`)
-                await fileWriter(file.name, file.content)
-            }
+        // Here we create a map of all the prompt results from the user
+        let userDefinedMapping = {}
+        for (let unknown of selectedModule.mapping){
+            userDefinedMapping[unknown] = await await askForVar(unknown)
         }
 
+
+
+        for (let file of selectedModule.content){
+            console.log(`+ creating/writing to file ${file.name}`)
+            let contentToPrint = ingest(file.content, userDefinedMapping)
+            await fileWriter(file.name, contentToPrint)
+        }
     }
+
+    
 
     // create a .cli-ignore
     // read the ignore file and get a list of file/folder names
