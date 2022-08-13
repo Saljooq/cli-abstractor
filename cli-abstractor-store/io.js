@@ -2,6 +2,8 @@ import { promisify } from 'util';
 import { regexScan } from './regex.js';
 import fs from 'fs'
 import path from 'path'
+import data from './store.js'
+import { isProjectCreator } from './globalVariables.js';
 
 /**
  * This should get the content of the file as String from a filenamesfread
@@ -68,15 +70,25 @@ import path from 'path'
  * @param {JSON} value 
  */
 export const writeToStore = (value) => {
+    var updatedValue
+
+    let local_data = data
+    if (!local_data){
+        local_data.content = local_data.content.filter(x => x.flag !== value.content[0].flag)
+        local_data.content.push(value.content[0])
+        updatedValue = data
+    }else{
+        updatedValue = value
+    }
+
     const content = JSON.stringify(value, null, 4);
 
-
-    const data = `const data = ${content}\n\nexport default data;`
+    const to_be_printed = `const data = ${content}\n\nexport default data;`
 
     // To be used for all content in sotre
     const fileName = `./cli-abstractor-store/store.js`
 
-    fileWriter(fileName, data);
+    fileWriter(fileName, to_be_printed);
 }
 
 /**
@@ -87,24 +99,57 @@ export const writeToStore = (value) => {
  */
  export const storeJsonCreator = (flag, content) => {
     var inputs = new Set()
+
+    let local_content = treatForCreator(content)
     
-    for (let files of content){
+    for (let files of local_content){
         let newMatch = regexScan(files["content"])
         newMatch.length > 0 && newMatch.forEach(x => inputs.add(x))
         console.log([...inputs])
     }
 
-    content = {
+    output = {
         projectName: "",
         description: "",
         content : [
             {
                 flag : flag,
-                content : content,
+                content : local_content,
                 mapping : [...inputs]
             }
         ]
     };
 
-    return content;
+    return output;
+}
+
+/**
+ * This method helps make sure the content is treated for creator repo - since
+ * the store.js for intance need to have null as data - or isCreator boolean should 
+ * be false - always
+ * 
+ * @param {} content 
+ * @returns 
+ */
+const treatForCreator = (content) =>{
+
+    let local_content = content
+
+    if (isProjectCreator()){
+        let new_local_content = []
+        for (let file of local_content){
+            if (file.name === './cli-abstractor-store/store.js'){
+                file.content = "const data = null\n\nexport default data;"
+            }
+            else if (file.name === './cli-abstractor-store/globalVariables.js'){
+                file.content = "// This should only be true for me\n// since my repo will be executed\n// and it needs to touch the package.json\n// REMEMBER to mark this false when absorbing\nexport const isProjectCreator = () => {\n    return false\n}\n\n\nexport const useForEndUser = () => {\n    return false\n}\n"
+            }
+
+            new_local_content.push(file)
+        }
+        local_content = new_local_content
+    }
+
+
+    return local_content
 }

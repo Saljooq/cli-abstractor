@@ -53,7 +53,6 @@ async function main(){
 
     const test_for_file = storeJsonCreator(in_flag, list_of_files_and_content);
 
-    console.log(test_for_file)
     writeToStore(test_for_file)
 
 }

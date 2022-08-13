@@ -1,7 +1,11 @@
 export const regexScan = (content) => {
     // Essentially we're asking for matches with starting
     // and ending jinja brackets without middle part
-    const regex = /{{[^{{]*}}/g;
+    const closingSquence = '}}'
+    const openingSequence = '{{'
+
+    var regex = openingSequence + '[^' +openingSequence + ']*' + closingSquence;
+
     const found = [...content.matchAll(regex)];
 
     const excludeBrack = (s) => {
@@ -14,3 +18,8 @@ export const regexScan = (content) => {
     console.log(finalRes)
     return finalRes
 }
+
+// test - comment out below to test
+console.log('hello')
+const text = "#include <stdio.h>\nint main()\n{\n    // printf() displays the string inside quotation\n    printf(\"{{Hello}}, World! Welcome to the new {{World}}, let's see if this works {{Hello  }}\");\n    return 0;\n}"
+console.log(regexScan(text))

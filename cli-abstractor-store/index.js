@@ -7,21 +7,12 @@ import {isProjectCreator, useForEndUser} from './globalVariables.js'
 import data from './store.js'
 import updatePackageJson from './updatePackageJson.js'
 import {ingest} from './ingest.js'
+import makeLogger from './logger.js'
 
 // This will be running on the end user's computers
 async function main(){
 
-    // We grab all the files on the current path
-    // TODO : recursively fetch all the files in the folders in the path
-
-    // This is for CLI developer
-
-
-    const Blink = "\x1b[5m"
-    const FgGreen = "\x1b[32m"
-    const BgYellow = "\x1b[43m"
-    const FgDefault = '\x1b[0m'
-
+    const logger = makeLogger()
 
     if (isProjectCreator()){
         updatePackageJson()
@@ -29,11 +20,22 @@ async function main(){
 
     
     const availableFlags = data ? data.content.map(x => x.flag) : []
-    console.log(`${FgGreen}Available flags: ${availableFlags}`, `${FgDefault}`)
 
-    // check for flag
-    var inFlag = await askForVar('flag')
-    inFlag = inFlag === '' ? 'default' : inFlag
+    var inFlag
+    if (availableFlags.length === 0){
+        console.log(logger.warning('no flags found. Ending program.'))
+        return
+    }else if (availableFlags.length === 1){
+        console.log(logger.important(`only one flag available -> ${availableFlags[0]}\nProcessing it by default....`))
+        inFlag = availableFlags[0]
+
+    }else{
+        console.log(logger.important(`Available flags: ${availableFlags}`))
+
+        // check for flag
+        inFlag = await askForVar('flag')
+        inFlag = inFlag === '' ? 'default' : inFlag
+    }
 
     const dataSelected = data ? data.content.filter(x => x.flag === inFlag): []
     
@@ -60,16 +62,6 @@ async function main(){
         }
     }
 
-    
-
-    // create a .cli-ignore
-    // read the ignore file and get a list of file/folder names
-    // dont put the file or foldernames that match the list in the store file/folder list
-    // make a copy of all the files in the store along with mapping - with the default flag
-    // this should then auto create the index file that would help users access flags and dynamically
-    // generate a prompt
-    // STAGE 1 COMPLETE
-    // console.log(process.cwd())
 }
 
 main()

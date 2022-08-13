@@ -17,6 +17,7 @@ async function updatePackageJson(){
         packageContent['scripts'] = {}
     }
     packageContent['scripts']['start'] = "node ."
+    packageContent['scripts']['absorb'] = "node ./cli-abstractor-store/absorb.js"
 
 
     const finalOutput = JSON.stringify(packageContent, null, 2)

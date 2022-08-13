@@ -1,4 +1,5 @@
 import readLine from 'readline'
+import makeLogger from './logger.js'
 /**
  * Simplifies the task of asking the user for an input - without libraries
  * 
@@ -23,7 +24,8 @@ import readLine from 'readline'
       )
     }
 
-    const outData = await AsyncReader(`What's the ${varName}?        `)
+    const logger = makeLogger()
+    const outData = await AsyncReader(logger.prompt(`What's the ${varName}?        `))
 
     return outData
   
