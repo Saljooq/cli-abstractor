@@ -25,7 +25,7 @@ const intro = (text) => {
 }
 
 const important = (text) => {
-    return `${FgGreen}${text}${FgDefault}`
+    return `${FgCyan}${text}${FgDefault}`
 }
 
 const prompt = (text) => {

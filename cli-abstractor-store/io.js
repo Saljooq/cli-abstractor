@@ -73,15 +73,15 @@ export const writeToStore = (value) => {
     var updatedValue
 
     let local_data = data
-    if (!local_data){
+    if (local_data !== null){
         local_data.content = local_data.content.filter(x => x.flag !== value.content[0].flag)
         local_data.content.push(value.content[0])
-        updatedValue = data
+        updatedValue = local_data
     }else{
         updatedValue = value
     }
 
-    const content = JSON.stringify(value, null, 4);
+    const content = JSON.stringify(updatedValue, null, 4);
 
     const to_be_printed = `const data = ${content}\n\nexport default data;`
 
@@ -105,10 +105,10 @@ export const writeToStore = (value) => {
     for (let files of local_content){
         let newMatch = regexScan(files["content"])
         newMatch.length > 0 && newMatch.forEach(x => inputs.add(x))
-        console.log([...inputs])
+        // console.log([...inputs])
     }
 
-    output = {
+    const output = {
         projectName: "",
         description: "",
         content : [

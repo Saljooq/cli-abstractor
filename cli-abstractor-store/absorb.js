@@ -3,6 +3,8 @@ import { getFileAndFoldersToBeStored } from './getFilesAndToBeStored.js'
 import { getFileAndFoldersToIgnore } from './getFileAndFoldersToIgnore.js'
 import {isProjectCreator, useForEndUser} from './globalVariables.js'
 import {askForVar} from './prompt.js'
+import data from './store.js'
+import makeLogger from './logger.js'
 
 async function main(){
 
@@ -39,9 +41,14 @@ async function main(){
 
     const list_of_files_and_content = []
 
+    const logger = makeLogger()
+    
+    console.log(logger.important(`INITIATING ABSORPTION UNDER FLAG -> ${in_flag}\n`))
+
     for (let fileName of listOfFilesToStore){
         const content_of_file = await readFile(fileName)
-        console.log(content_of_file);
+        // console.log(content_of_file);
+        console.log(logger.important(`+ absorbing -> ${fileName}`))
 
         let new_file_content = {}
         new_file_content['name'] = fileName

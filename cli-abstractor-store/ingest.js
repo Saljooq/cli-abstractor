@@ -1,3 +1,5 @@
+import { closingSquence, openingSequence } from "./regex.js";
+
 export const ingest =  (fileContent, mappings) =>{
 
     let data = fileContent;
@@ -6,8 +8,8 @@ export const ingest =  (fileContent, mappings) =>{
   
       const res = mappings[i];
   
-      const st = '{{\\s*' + i + '\\s*}}'
-  
+      const st = openingSequence + '\\s*' + i + '\\s*' + closingSquence
+
       data = data.replace(new RegExp(st, 'g'), res);
   
     }
