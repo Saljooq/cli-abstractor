@@ -1,12 +1,13 @@
 {
   "name": "cli-abstractor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "This can be potentially be used by developers to create a CLI that would allow code reuse - and a CLI to prompt them for necessary information",
   "main": "./cli-abstractor-store/index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "start": "node .",
-    "absorb": "node ./cli-abstractor-store/absorb.js"
+    "absorb": "node ./cli-abstractor-store/absorb.js",
+    "build": "babel ./cli-abstractor-store/* -d lib"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,10 @@
     "url": "https://github.com/Saljooq/cli-abstractor/issues"
   },
   "homepage": "https://github.com/Saljooq/cli-abstractor#readme",
-  "bin": "./cli-abstractor-store/index.js"
+  "bin": "./cli-abstractor-store/index.js",
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6"
+  }
 }

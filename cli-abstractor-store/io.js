@@ -31,13 +31,16 @@ import { isProjectCreator } from './globalVariables.js';
  * @param {String} content 
  */
  export const fileWriter = async (fileName, content) => {
-    async function isExists(path) {
-        try {
-            await fs.access(path);
-            return true;
-        } catch {
-            return false;
-        }
+    const isExists = async path => {
+        return new Promise(resolve => {
+          _fs.default.access(path, _fs.default.constants.F_OK, err => {
+                if (err) {
+                return resolve(false);
+                } else {
+                return resolve(true);
+                }
+            });
+        });
     };
       
     const errorLog = (custom_string) =>{
