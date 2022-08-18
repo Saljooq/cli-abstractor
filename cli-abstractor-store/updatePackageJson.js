@@ -9,6 +9,8 @@ async function updatePackageJson(){
     const packageRawContent = await readFile('./package.json')
     const packageContent = JSON.parse(packageRawContent)
 
+    if (!packageContent) { packageContent = {} }
+
     packageContent['main'] = "./cli-abstractor-store/index.js"
     packageContent['type'] = "module"
     packageContent['bin'] = "./cli-abstractor-store/index.js"
@@ -22,7 +24,7 @@ async function updatePackageJson(){
 
     const finalOutput = JSON.stringify(packageContent, null, 2)
 
-    fileWriter('package.json', finalOutput)
+    await fileWriter('package.json', finalOutput)
 
 }
 
