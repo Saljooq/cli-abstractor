@@ -62,7 +62,10 @@ hello Sal I bet you work as a Software Engineer
 export const closingSquence = '}}'
 export const openingSequence = '{{'
 ```
-
+6. To prevent older versions of your CLI (or in case this abstractor gets updated then this abstractor too) from running it is important to clear the cache too
+```bash
+$ npx clear-npx-cache
+```
 
 
 # GOAL FOR PHASE 1
