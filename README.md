@@ -2,74 +2,67 @@
 This can be potentially be used by developers to create a CLI that would allow code reuse - and a CLI to prompt them for necessary information
 
 
-Notes on how to create cli-abstractor:
+Notes on how to create a CLI from the extractor:
 
-0. First the user needs to create some sort of a files that will be reproduced -> {{}} might be good
-
-Test for regex:
-```
-let word = "{{Hello}}twist"
-word = word.replace(/{{\s*Hello\s*}}/, 'ttff')
-console.log(word)
-```
-Test for variable regex:
-```
-let word = "{{Hello}}twist"
-let he = 'Hello'
-const st = '{{\\s*' + he + '\\s*}}'
-console.log(st)
-
-const hel = word.match(/{{(.*?)}}/)
-console.log(hel)
-
-word = word.replace(new RegExp(st), 'ttff');
-console.log(word)
-
-word = word.replace(/{{\s*Hello\s*}}/, 'ttff')
-console.log(word)
+1. First we create a folder and two inside it - one for CLI and one for test
+```bash
+mkdir cli-container
+cd cli-container
+mkdir my-first-cli
+mkdir cli-test-container
 ```
 
-1. create abstract data-structures to get the required input from the user
-1.1. Scan all the files - this can be used to produce the required options too
-
-==> need a POC that it can be done with the secondary cli i.e. can our module scan the files stored in the module and write onto the main folder
-
-Note: It appears that the current i.e. '.' is whatever path the user is on => this would be useful for producing all the secondary files in the right folder.
-However, this means that finding the location of all the static files will be very hard for the final user.
-To ease that we can create a basic json -> escaping is done internally, these api's make most of it happen:
-
-```
-JSON.parse(data)
-JSON.stringify(obj)
+2. Next we create an npm package that will be the CLI program and load relevant stuff into it
+```bash
+cd my-first-cli
+npm init // or 'npm init -y' if you want to skip the prompt
+npx https://github.com/Saljooq/cli-abstractor
 ```
 
-==> POC for 1.1
+3. Next we will create a test file that can contain some code too and put it in a test.file and absorb it as default
+```bash
+
+echo hello {{name}} I bet you work as a {{ profession }} > test.file
+npm run absorb
+
+> my-first-cli@1.0.0 absorb
+> node ./cli-abstractor-store/absorb.js
+
+Here is the list of files that would be added
+[ './test.file' ]
+Do you want to continue
+What's the answer?        y
+What's the Flag?        default
+INITIATING ABSORPTION UNDER FLAG -> default
+
++ absorbing -> ./test.file
+
 ```
-let word = "{{Hello}} to the world this is your {{captain}}"
-const regex = /{{[^{{]*}}/g;
-const found = [...word.matchAll(regex)];
 
-const excludeBrack = (s) => {
-  let res = "";
-  for (let i = 0; i < s.length; i++){
-    if (s[i]!== "{" && s[i]!== "}")
-    {
-      res += s[i]
-    }
-  }
-  return res.trim()
-}
-console.log(found.map(x => excludeBrack(x[0])))
+4. To test it from a completely new file location we use the test folder - after that we can upload it to git repo and run it as npx www.your-repo.com
+```bash
+$ cd ../cli-test-container
+npx ../my-first-cli/
+Need to install the following packages:
+  file:../temp_test_delete_please
+Ok to proceed? (y) y
+only one flag available -> default
+Processing it by default....
+What's the name?        Sal
+What's the profession?        Software Engineer
++ creating/writing to file ./test.file
+$ ls
+test.file
+$ cat test.file 
+hello Sal I bet you work as a Software Engineer
+
+```
+5. If {{}} style of templating conflicts with your code go to cli-abstractor-store/regex.js and update the starting and ending sequences
+```javascript
+export const closingSquence = '}}'
+export const openingSequence = '{{'
 ```
 
-
-2. create an abstract class to make functions for the cli-queries 
-2.1. Once the options from the users are obtained - can be stored as a json and fed to the factory
-
-the final user upon running the module -> will be calling the abtract funtion that will fist load all the required data onto the memory from json and then proceed to write to all the files in the the user's folder
-
-
-3. Include instructions on publishing and how to use it 
 
 
 # GOAL FOR PHASE 1
