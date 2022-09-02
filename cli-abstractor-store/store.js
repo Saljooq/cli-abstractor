@@ -10,10 +10,6 @@ const data = {
                     "content": "README.md\npackage.json\nindex-client-module.js\n.git\ncli-abstractor-store\ntestOutput.c"
                 },
                 {
-                    "name": "./testInput.c",
-                    "content": "#include <stdio.h>\nint main()\n{\n    // printf() displays the string inside quotation\n    printf(\"{{Hello}}, World! Welcome to the new {{World}}, let's see if this works {{Hello  }}\");\n    return 0;\n}"
-                },
-                {
                     "name": "./cli-abstractor-store/absorb.js",
                     "content": "import { writeToStore, readFile, storeJsonCreator, fileWriter } from './io.js'\nimport { getFileAndFoldersToBeStored } from './getFilesAndToBeStored.js'\nimport { getFileAndFoldersToIgnore } from './getFileAndFoldersToIgnore.js'\nimport {isProjectCreator, useForEndUser} from './globalVariables.js'\nimport {askForVar} from './prompt.js'\nimport data from './store.js'\nimport makeLogger from './logger.js'\n\nasync function main(){\n\n    const listOfFilesToIgnore = await getFileAndFoldersToIgnore()\n\n    !isProjectCreator() && (listOfFilesToIgnore.push('.cli-ignore'))\n\n    const listOfFilesToStore = getFileAndFoldersToBeStored(listOfFilesToIgnore)\n    \n    console.log(\"Here is the list of files that would be added\")\n    console.log(listOfFilesToStore)\n\n    console.log(\"Do you want to continue\")\n    var answer = await askForVar(\"answer\")\n    if (answer !== 'yes' && answer !== 'y'){\n        return\n    }\n\n    var in_flag = await askForVar(\"Flag\");\n\n    in_flag = in_flag === '' ? 'default' : in_flag;\n\n    const availableFlags = data ? data.content.map(x => x.flag) : []\n\n    if (availableFlags.includes(in_flag)){\n        console.log(`There appears to be a conflict. Existing flags: ${availableFlags}`+\n        '\\nAre you sure you want to overwrite existing files? - check cli-abstractor-store/store.js')\n        console.log(\"Do you want to continue\")\n        var answer = await askForVar(\"answer\")\n        if (answer !== 'yes' && answer !== 'y'){\n            return\n        }\n    }\n\n    const list_of_files_and_content = []\n\n    const logger = makeLogger()\n    \n    console.log(logger.important(`INITIATING ABSORPTION UNDER FLAG -> ${in_flag}\\n`))\n\n    for (let fileName of listOfFilesToStore){\n        const content_of_file = await readFile(fileName)\n        // console.log(content_of_file);\n        console.log(logger.important(`+ absorbing -> ${fileName}`))\n\n        let new_file_content = {}\n        new_file_content['name'] = fileName\n        new_file_content['content'] = content_of_file\n        list_of_files_and_content.push(new_file_content)\n\n\n    }\n\n    const test_for_file = storeJsonCreator(in_flag, list_of_files_and_content);\n\n    writeToStore(test_for_file)\n\n}\n\n\nmain()"
                 },
@@ -55,7 +51,7 @@ const data = {
                 },
                 {
                     "name": "./cli-abstractor-store/regex.js",
-                    "content": "export const closingSquence = '}}'\nexport const openingSequence = '{{'\n\nexport const regexScan = (content) => {\n    // Essentially we're asking for matches with starting\n    // and ending jinja brackets without middle part\n\n    var regex = openingSequence + '[^' + openingSequence + ']*' + closingSquence;\n\n    const found = [...content.matchAll(regex)];\n\n    const excludeBrack = (s) => {\n        return s.substr(2, s.length - 4).trim()\n    }\n\n    const allInputsWithRepeat = found.map(x => excludeBrack(x[0]));\n    const allInput = new Set(allInputsWithRepeat)\n    const finalRes =  [...allInput];\n    // console.log(finalRes)\n    return finalRes\n}\n\n// test - comment out below to test\n// const text = \"#include <stdio.h>\\nint main()\\n{\\n    // printf() displays the string inside quotation\\n    printf(\\\"{{Hello}}, World! Welcome to the new {{World}}, let's see if this works {{Hello  }}\\\");\\n    return 0;\\n}\"\n// console.log(regexScan(text))"
+                    "content": "export const closingSquence = '}}'\nexport const openingSequence = '{{'\n\nexport const regexScan = (content) => {\n    // Essentially we're asking for matches with starting\n    // and ending jinja brackets without middle part\n\n    var regex = openingSequence + '[^' + openingSequence + ']*' + closingSquence;\n\n    const found = [...content.matchAll(regex)];\n\n    const excludeBrack = (s) => {\n        return s.substr(2, s.length - 4).trim()\n    }\n\n    const allInputsWithRepeat = found.map(x => excludeBrack(x[0]));\n    const allInput = new Set(allInputsWithRepeat)\n    const finalRes =  [...allInput];\n    // console.log(finalRes)\n    return finalRes\n}\n\n// test - comment out below to test\n// const text = \"#include <stdio.h>\\nint main()\\n{\\n    // printf() displays the string inside quotation\\n    printf(\\\"\" \n// + openingSequence + \"Hello\" + closingSquence + \n// \", World! Welcome to the new \" \n// + openingSequence + \"World\" + closingSquence +\n// \", let's see if this works \"\n// + openingSequence + \"Hello\" + closingSquence + \n// \"\\\");\\n    return 0;\\n}\"\n// console.log(regexScan(text))"
                 },
                 {
                     "name": "./cli-abstractor-store/store.js",
@@ -70,10 +66,7 @@ const data = {
                     "content": ""
                 }
             ],
-            "mapping": [
-                "Hello",
-                "World"
-            ]
+            "mapping": []
         }
     ]
 }

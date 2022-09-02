@@ -6,24 +6,24 @@ Notes on how to create a CLI from the extractor:
 
 1. First we create a folder and two inside it - one for CLI and one for test
 ```bash
-mkdir cli-container
-cd cli-container
-mkdir my-first-cli
-mkdir cli-test-container
+$ mkdir cli-container
+$ cd cli-container
+$ mkdir my-first-cli
+$ mkdir cli-test-container
 ```
 
 2. Next we create an npm package that will be the CLI program and load relevant stuff into it
 ```bash
-cd my-first-cli
-npm init // or 'npm init -y' if you want to skip the prompt
-npx https://github.com/Saljooq/cli-abstractor
+$ cd my-first-cli
+$ npm init // or 'npm init -y' if you want to skip the prompt
+$ npx https://github.com/Saljooq/cli-abstractor
 ```
 
 3. Next we will create a test file that can contain some code too and put it in a test.file and absorb it as default
 ```bash
 
-echo hello {{name}} I bet you work as a {{ profession }} > test.file
-npm run absorb
+$ echo hello {{name}} I bet you work as a {{ profession }} > test.file
+$ npm run absorb
 
 > my-first-cli@1.0.0 absorb
 > node ./cli-abstractor-store/absorb.js
@@ -42,7 +42,7 @@ INITIATING ABSORPTION UNDER FLAG -> default
 4. To test it from a completely new file location we use the test folder - after that we can upload it to git repo and run it as npx www.your-repo.com
 ```bash
 $ cd ../cli-test-container
-npx ../my-first-cli/
+$ npx ../my-first-cli/
 Need to install the following packages:
   file:../temp_test_delete_please
 Ok to proceed? (y) y

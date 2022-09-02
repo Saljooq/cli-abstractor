@@ -21,5 +21,11 @@ export const regexScan = (content) => {
 }
 
 // test - comment out below to test
-// const text = "#include <stdio.h>\nint main()\n{\n    // printf() displays the string inside quotation\n    printf(\"{{Hello}}, World! Welcome to the new {{World}}, let's see if this works {{Hello  }}\");\n    return 0;\n}"
+// const text = "#include <stdio.h>\nint main()\n{\n    // printf() displays the string inside quotation\n    printf(\"" 
+// + openingSequence + "Hello" + closingSquence + 
+// ", World! Welcome to the new " 
+// + openingSequence + "World" + closingSquence +
+// ", let's see if this works "
+// + openingSequence + "Hello" + closingSquence + 
+// "\");\n    return 0;\n}"
 // console.log(regexScan(text))
